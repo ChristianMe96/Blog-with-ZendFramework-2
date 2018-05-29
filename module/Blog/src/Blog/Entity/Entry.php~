@@ -1,0 +1,140 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: christian.meinhard
+ * Date: 14.05.2018
+ * Time: 10:36
+ */
+
+namespace Blog\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ *
+ * @ORM\Entity
+ *
+ */
+
+class Entry
+{
+    /**
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $title;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $content;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    protected $date;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    protected $authorId;
+
+    public function exchangeArray($data)
+    {
+        $this->id     = (!empty($data['id'])) ? $data['id'] : null;
+        $this->title  = (!empty($data['title'])) ? $data['title'] : null;
+        $this->content = (!empty($data['content'])) ? $data['content'] : null;
+        $this->date  = (!empty($data['date'])) ? $data['date'] : null;
+        $this->authorId  = (!empty($data['authorId'])) ? $data['authorId'] : null;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param mixed $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @param mixed $content
+     */
+    public function setContent($content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param mixed $date
+     */
+    public function setDate($date)
+    {
+        $this->date = $date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthorId()
+    {
+        return $this->authorId;
+    }
+
+    /**
+     * @param $authorId
+     */
+    public function setAuthorId($authorId)
+    {
+        $this->authorId = $authorId;
+    }
+
+
+
+}

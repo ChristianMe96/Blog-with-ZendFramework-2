@@ -1,0 +1,27 @@
+<?php
+
+
+$title = 'Edit Entry';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<?php
+$form = $this->form;
+$entry = $this->entry;
+
+$form->prepare();
+//Todo: Set von Attributen und Values im Controller machen
+echo $this->form()->openTag($form);
+
+?>
+
+<div class="form-group">
+    <?php echo $this->formRow($form->get('title')->setValue($entry->getTitle())); ?>
+</div>
+
+<div class="form-group">
+    <?php echo $this->formRow($form->get('content')->setValue($entry->getContent())); ?>
+</div>
+
+<?php echo $this->formSubmit($form->get('submit')); ?>
+<?php echo $this->form()->closeTag(); ?>

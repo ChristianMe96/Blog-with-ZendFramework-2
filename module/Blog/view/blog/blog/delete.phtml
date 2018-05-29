@@ -1,0 +1,23 @@
+<?php
+
+$title = 'Delete album';
+$this->headTitle($title);
+$entry = $this->entry;
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+<p>Are you sure that you want to delete
+    '<b><?php echo $this->escapeHtml($entry->getTitle()); ?></b>'?
+</p>
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url('blog', array('action' => 'delete', 'id' => $this->id)));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+
+?>
+
+<?php echo $this->formSubmit($form->get('deleteYes')); ?>
+<?php echo $this->formSubmit($form->get('deleteNo')); ?>
+<?php echo $this->form()->closeTag(); ?>
+
