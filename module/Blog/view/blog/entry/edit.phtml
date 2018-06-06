@@ -1,0 +1,21 @@
+<?php
+
+
+$title = 'Edit Entry';
+$this->headTitle($title);
+?>
+<h1 class="text-center"><?php echo $this->escapeHtml($title); ?></h1>
+<?php
+
+$this->form->prepare();
+//Todo: Set von Attributen und Values im Controller machen
+echo $this->form()->openTag($this->form);
+
+?>
+
+<?php echo $this->bootstrapHelper()->formGroupDiv($this->formRow($this->form->get('title'))) ?>
+
+<?php echo $this->bootstrapHelper()->formGroupDiv($this->formRow($this->form->get('content'))) ?>
+
+<?php echo $this->formSubmit($this->form->get('submit')); ?>
+<?php echo $this->form()->closeTag(); ?>

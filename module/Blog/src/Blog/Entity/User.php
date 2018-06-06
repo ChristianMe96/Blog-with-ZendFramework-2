@@ -26,6 +26,26 @@ class User
     protected $username;
 
     /**
+     * @param mixed $username
+     * @return User
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+        return $this;
+    }
+
+    /**
+     * @param mixed $password
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    /**
      * @ORM\Column(type="string")
      */
 

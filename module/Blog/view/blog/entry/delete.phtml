@@ -1,0 +1,19 @@
+<?php
+
+$title = 'Delete Entry';
+$this->headTitle($title);
+?>
+<h1 class="text-center"><?php echo $this->escapeHtml($title); ?></h1>
+<p>Are you sure that you want to delete
+    '<b><?php echo $this->escapeHtml($this->entry->getTitle()); ?></b>'?
+</p>
+<?php
+$this->form->prepare();
+
+echo $this->form()->openTag($this->form);
+
+
+echo $this->formSubmit($this->form->get('deleteYes'));
+echo $this->formSubmit($this->form->get('deleteNo'));
+echo $this->form()->closeTag();
+

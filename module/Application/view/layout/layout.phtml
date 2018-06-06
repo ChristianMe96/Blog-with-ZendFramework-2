@@ -14,7 +14,8 @@
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
                         ->prependStylesheet($this->basePath('css/style.css'))
                         ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
-                        ->prependStylesheet($this->basePath('css/bootstrap.min.css')) ?>
+                        ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+                        ->prependStylesheet($this->basePath('css/blog-post.css')) ?>
 
         <!-- Scripts -->
         <?php echo $this->headScript()
@@ -40,10 +41,10 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
                         <?php if(!$this->valid) :?>
-                            <li><a href="<?php echo $this->url('blog', array('action'=>'login')) ?>"><?php echo $this->translate('Login') ?></a></li>
+                            <li><a href="<?php echo $this->url('login', array('action'=>'login')) ?>"><?php echo $this->translate('Login') ?></a></li>
                         <?php else : ?>
-                            <li><a href="<?php echo $this->url('blog', array('action'=>'add')) ?>"><?php echo $this->translate('Add Entry') ?></a></li>
-                            <li><a href="<?php echo $this->url('blog', array('action'=>'logout')) ?>"><?php echo $this->translate('Logout') ?></a></li>
+                            <li><a href="<?php echo $this->url('entry', array('action'=>'add')) ?>"><?php echo $this->translate('Add Entry') ?></a></li>
+                            <li><a href="<?php echo $this->url('logout', array('action'=>'logout')) ?>"><?php echo $this->translate('Logout') ?></a></li>
                         <?php endif; ?>
                     </ul>
                 </div><!--/.nav-collapse -->

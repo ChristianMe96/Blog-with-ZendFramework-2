@@ -22,7 +22,6 @@ class EntryFilter implements InputFilterAwareInterface
 {
     protected $inputFilter;
 
-    // Add content to these methods:
     public function setInputFilter(InputFilterInterface $inputFilter)
     {
         throw new \Exception("Not used");

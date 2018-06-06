@@ -35,7 +35,8 @@ class Entry
     protected $date;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="authorId", referencedColumnName="id")
      */
     protected $authorId;
 

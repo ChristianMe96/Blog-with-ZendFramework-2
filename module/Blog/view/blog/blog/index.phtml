@@ -1,28 +1,22 @@
 <?php
-$title = 'Entries';
+$title = 'Home';
 $this->headTitle($title);
 ?>
-<h1><?php echo $this->escapeHtml($title); ?></h1>
-<p>
-    <a href="<?php echo $this->url('blog', array('action'=>'add'));?>">Add new Entry</a>
-</p>
+<h1 class="text-center"><?php echo $this->escapeHtml($title); ?></h1>
 
-<table class="table">
-    <tr>
-        <th>Title</th>
-        <th>Content</th>
-        <th>&nbsp;</th>
-    </tr>
-    <?php foreach ($entries as $entry) : ?>
-        <tr>
-            <td><?php echo $this->escapeHtml($entry->getTitle());?></td>
-            <td><?php echo $this->escapeHtml($entry->getContent());?></td>
-            <td>
-                <a href="<?php echo $this->url('blog',
-                    array('action'=>'edit', 'id' => $entry->getId()));?>">Edit</a>
-                <a href="<?php echo $this->url('blog',
-                    array('action'=>'delete', 'id' => $entry->getId()));?>">Delete</a>
-            </td>
-        </tr>
-    <?php endforeach; ?>
-</table>
+
+
+<?php foreach ($entries as $entry) : ?>
+    <?php echo $this->partial('blog/partial/entry.phtml', ['entry' => $entry])?>
+
+    <a href="<?php echo $this->url('entry', array('action'=>'details', 'id' => $entry->getId()));?>"
+       class="btn btn-default">Details Page</a>
+    <a href="<?php echo $this->url('entry',
+        array('action'=>'edit', 'id' => $entry->getId()));?>"
+       class="btn btn-default">Edit</a>
+    <a href="<?php echo $this->url('entry',
+        array('action'=>'delete', 'id' => $entry->getId()));?>"
+       class="btn btn-default">Delete</a>
+<?php endforeach; ?>
+
+

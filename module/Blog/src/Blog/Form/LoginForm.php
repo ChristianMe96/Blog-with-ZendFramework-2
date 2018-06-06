@@ -17,6 +17,8 @@ class LoginForm extends Form
     {
         parent::__construct('login');
 
+
+
         $titleInput = new Element\Text();
         $titleInput->setName('username');
         $titleInput->setLabel('Username');
@@ -39,7 +41,7 @@ class LoginForm extends Form
         $submit = new Element\Submit();
         $submit->setName('submit');
         $submit->setValue('Login');
-        $submit->setAttribute('class','btn  btn-default');
+        $submit->setAttribute('class','btn  btn-primary');
         $this->add($submit);
 
     }

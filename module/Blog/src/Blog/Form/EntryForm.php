@@ -21,16 +21,21 @@ class EntryForm extends Form
         */
 
         //ToDo: Fieldset benutzen
+        //$divFormGroup = new
 
         $titleInput = new Element\Text();
         $titleInput->setName('title');
         $titleInput->setLabel('Title');
         $titleInput->setAttribute('class','form-control');
 
-        $contentInput = new Element\Text();
+        $contentInput = new Element\Textarea();
         $contentInput->setName('content');
         $contentInput->setLabel('Content');
-        $contentInput->setAttribute('class','form-control');
+        $contentInput->setAttributes([
+            'class' => 'form-control',
+            'rows' => 10,
+            'cols' => 60
+        ]);
         /*
         $authorInput = new Element\Hidden();
         $authorInput->setName('authorId');
