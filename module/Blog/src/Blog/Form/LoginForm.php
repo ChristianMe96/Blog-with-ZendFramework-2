@@ -24,25 +24,24 @@ class LoginForm extends Form
         $titleInput->setLabel('Username');
         $titleInput->setAttribute('class','form-control');
 
-        $this->add($titleInput);
-
         $passwordInput = new Element\Password();
         $passwordInput->setName('password');
         $passwordInput->setLabel('Password');
         $passwordInput->setAttribute('class','form-control');
-        $this->add($passwordInput);
-/*
-        $authorInput = new Element\Checkbox();
-        $authorInput->setName('author');
-        $authorInput->setLabel('Author');
-        $this->add($authorInput);
-*/
 
         $submit = new Element\Submit();
         $submit->setName('submit');
         $submit->setValue('Login');
         $submit->setAttribute('class','btn  btn-primary');
-        $this->add($submit);
+
+        /*
+        $register = new Element\Submit();
+        $register->setName('register');
+        $register->setValue('Register');
+        $register->setAttribute('class','btn  btn-primary');
+        */
+
+        $this->add($titleInput)->add($passwordInput)->add($submit);#->add($register);
 
     }
 }

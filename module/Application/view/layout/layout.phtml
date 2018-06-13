@@ -42,6 +42,7 @@
                         <li class="active"><a href="<?php echo $this->url('home') ?>"><?php echo $this->translate('Home') ?></a></li>
                         <?php if(!$this->valid) :?>
                             <li><a href="<?php echo $this->url('login', array('action'=>'login')) ?>"><?php echo $this->translate('Login') ?></a></li>
+                            <li><a href="<?php echo $this->url('register', array('action'=>'register')) ?>"><?php echo $this->translate('Register') ?></a></li>
                         <?php else : ?>
                             <li><a href="<?php echo $this->url('entry', array('action'=>'add')) ?>"><?php echo $this->translate('Add Entry') ?></a></li>
                             <li><a href="<?php echo $this->url('logout', array('action'=>'logout')) ?>"><?php echo $this->translate('Logout') ?></a></li>

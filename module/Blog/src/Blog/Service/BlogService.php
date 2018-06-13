@@ -41,6 +41,20 @@ class BlogService
         $this->entityManager->flush();
     }
 
+    public function addNewUser($data)
+    {
+        $user = new User();
+        $user->setUsername($data['username']);
+        //hash the Password
+        $password = password_hash($data['password'], PASSWORD_BCRYPT,['cost' => 12]);
+        $user->setPassword($password);
+
+
+        $this->entityManager->persist($user);
+
+        $this->entityManager->flush();
+    }
+
     public function editEntry($data, $entry)
     {
         $container = new Container('login');

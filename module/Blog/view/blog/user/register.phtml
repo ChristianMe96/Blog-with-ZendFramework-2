@@ -1,0 +1,23 @@
+<?php
+$title = 'Register';
+$this->headTitle($title);
+?>
+<h1 class="text-center"><?php echo $this->escapeHtml($title); ?></h1>
+<?php
+
+$this->form->prepare();
+$this->form->setAttribute('action', $this->url('registration'));
+echo $this->form()->openTag($this->form);
+
+?>
+
+<?php echo $this->bootstrapHelper()->formGroupDiv($this->formRow($this->form->get('username'))) ?>
+
+<?php echo $this->bootstrapHelper()->formGroupDiv($this->formRow($this->form->get('password'))) ?>
+
+<?php if ($this->errorMessage) :?>
+  <p><?php echo $this->errorMessage; ?></p>
+<?php endif; ?>
+
+<?php echo $this->formSubmit($this->form->get('submit')); ?>
+<?php echo $this->form()->closeTag(); ?>

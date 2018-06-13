@@ -6,7 +6,7 @@ $this->headTitle($title);
 <?php
 
 $this->form->prepare();
-$this->form->setAttribute('action', $this->url('loginPost'));
+$this->form->setAttribute('action', $this->url('processLogin'));
 echo $this->form()->openTag($this->form);
 
 ?>
@@ -14,6 +14,10 @@ echo $this->form()->openTag($this->form);
 <?php echo $this->bootstrapHelper()->formGroupDiv($this->formRow($this->form->get('username'))) ?>
 
 <?php echo $this->bootstrapHelper()->formGroupDiv($this->formRow($this->form->get('password'))) ?>
+
+<?php if ($this->wrongloginData) :?>
+<p>Wrong Username or Password please try again!</p>
+<?php endif; ?>
 
 <?php echo $this->formSubmit($this->form->get('submit')); ?>
 <?php echo $this->form()->closeTag(); ?>

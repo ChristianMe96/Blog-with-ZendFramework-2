@@ -34,20 +34,7 @@ class EntryController extends AbstractActionController
 
     public function addAction()
     {
-
         $blogForm = new EntryForm();
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $entryFilter = new EntryFilter();
-            $blogForm->setInputFilter($entryFilter->getInputFilter());
-            $blogForm->setData($request->getPost());
-            if ($blogForm->isValid()) {
-                $this->blogService->addNewEntry($blogForm->getData());
-                // Redirect to list of Entries
-                return $this->redirect()->toRoute('home');
-            }
-
-        }
         return array('form' => $blogForm);
     }
 
@@ -55,7 +42,6 @@ class EntryController extends AbstractActionController
     {
         //Get Entry ID
         $id = (int) $this->params()->fromRoute('id', 0);
-
 
         //Find existing Entry
         $entry = $this->entryRepo->find($id);
@@ -67,21 +53,56 @@ class EntryController extends AbstractActionController
         $form->get('title')->setValue($entry->getTitle());
         $form->get('content')->setValue($entry->getContent());
 
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $entryFilter = new EntryFilter();
-            $form->setInputFilter($entryFilter->getInputFilter());
-            $form->setData($request->getPost());
-            if ($form->isValid()) {
-                $this->blogService->editEntry($form->getData(), $entry);
-                // Redirect to list of Entries
-                return $this->redirect()->toRoute('home');
-            }
-        }
         return new ViewModel(['entry' => $entry, 'form' => $form, 'id' => $id]);
     }
 
+    public function createEntryAction()
+    {
+        $entryForm = new EntryForm();
+        $request = $this->getRequest();
+        $entryFilter = new EntryFilter();
+        $entryForm->setInputFilter($entryFilter->getInputFilter());
+        $entryForm->setData($request->getPost());
+        if ($entryForm->isValid()) {
+            $this->blogService->addNewEntry($entryForm->getData());
+            // Redirect to list of Entries
+            return $this->redirect()->toRoute('home');
+        }
+        return $this->redirect()->toRoute('entry');
+    }
+    public function addCommentAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
 
+        $request = $this->getRequest();
+        $form = new AddCommentForm();
+        $commentFilter = new CommentFilter();
+        $form->setInputFilter($commentFilter->getInputFilter());
+        $form->setData($request->getPost());
+        if ($form->isValid()) {
+            // Redirect to list of Entries
+            $entry = $this->entryRepo->find($id);
+            $this->blogService->addNewComment($form->getData(), $entry);
+            return $this->redirect()->toRoute('entry', ['action'=>'details', 'id' => $id]);
+        }
+    }
+
+    public function editEntryAction()
+    {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        $form  = new EntryForm();
+        $request = $this->getRequest();
+        $entryFilter = new EntryFilter();
+        $form->setInputFilter($entryFilter->getInputFilter());
+        $form->setData($request->getPost());
+        if ($form->isValid()) {
+            $entry = $this->entryRepo->find($id);
+            $this->blogService->editEntry($form->getData(), $entry);
+            // Redirect to list of Entries
+            return $this->redirect()->toRoute('home');
+        }
+        return $this->redirect()->toRoute('entry', ['action'=>'edit', 'id' => $id]);
+    }
 
     public function deleteAction()
     {
@@ -107,25 +128,8 @@ class EntryController extends AbstractActionController
 
         $comments = $this->commentRepo->findBy(['entryId' => $id]);
         $form = new AddCommentForm();
-        if (count($comments) == 0) {
-            $entry = $this->entryRepo->find($id);
-        }else {
-            $entry = $comments[0]->getEntryId();
-        }
+        $entry = $this->entryRepo->find($id);
 
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $entryFilter = new CommentFilter();
-            $form->setInputFilter($entryFilter->getInputFilter());
-            $form->setData($request->getPost());
-            if ($form->isValid()) {
-                // Redirect to list of Entries
-                $this->blogService->addNewComment($form->getData(), $entry);
-                return $this->redirect()->refresh();
-            }
-
-        }
-
-        return new ViewModel(['entry' => $entry, 'comments' => $comments , 'form' => $form]);
+        return new ViewModel(['entry' => $entry, 'comments' => $comments , 'form' => $form, 'id' => $id]);
     }
 }

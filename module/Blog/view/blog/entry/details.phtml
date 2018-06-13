@@ -4,6 +4,7 @@
     <h4 class="card-header">Leave a Comment:</h4>
     <div class="card-body">
         <?php $this->form->prepare(); ?>
+        <?php $this->form->setAttribute('action', $this->url('addComment', ['id' => $this->id])); ?>
         <?php echo $this->form()->openTag($this->form); ?>
         <div class="form-group">
             <?php echo $this->formRow($this->form->get('nameInput')); ?>

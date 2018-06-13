@@ -6,9 +6,10 @@ return array(
         ),
         'factories' => array(
             //ToDo Factories anpassen Klassen referenz
-            \Blog\Controller\LoginController::class => \Blog\Factory\LoginController::class,
             \Blog\Controller\EntryController::class => \Blog\Factory\EntryController::class,
             \Blog\Controller\BlogController::class => \Blog\Factory\BlogController::class,
+            \Blog\Controller\PostController::class => \Blog\Factory\PostController::class,
+            \Blog\Controller\UserController::class => \Blog\Factory\UserController::class,
         ),
     ),
 
@@ -44,8 +45,28 @@ return array(
                 'options' => [
                     'route'    => '/login',
                     'defaults' => [
-                        'controller' => Blog\Controller\LoginController::class,
+                        'controller' => Blog\Controller\UserController::class,
                         'action'     => 'login',
+                    ],
+                ],
+            ],
+            'register' => [
+                'type'    => 'Segment',
+                'options' => [
+                    'route'    => '/register[/:error]',
+                    'defaults' => [
+                        'controller' => Blog\Controller\UserController::class,
+                        'action'     => 'register',
+                    ],
+                ],
+            ],
+            'registration' => [
+                'type'    => 'Literal',
+                'options' => [
+                    'route'    => '/registration',
+                    'defaults' => [
+                        'controller' => Blog\Controller\UserController::class,
+                        'action'     => 'registration',
                     ],
                 ],
             ],
@@ -54,18 +75,54 @@ return array(
                 'options' => [
                     'route'    => '/logout',
                     'defaults' => [
-                        'controller' => \Blog\Controller\LoginController::class,
+                        'controller' => \Blog\Controller\UserController::class,
                         'action'     => 'logout',
                     ],
                 ],
             ],
-            'loginPost' => [
+            'processLogin' => [
                 'type'    => 'Literal',
                 'options' => [
-                    'route'    => '/post',
+                    'route'    => '/loginPost',
                     'defaults' => [
-                        'controller' => \Blog\Controller\LoginController::class,
-                        'action'     => 'loginPost',
+                        'controller' => \Blog\Controller\UserController::class,
+                        'action'     => 'processLogin',
+                    ],
+                ],
+            ],
+            'createEntry' => [
+                'type'    => 'Literal',
+                'options' => [
+                    'route'    => '/entryPost',
+                    'defaults' => [
+                        'controller' => \Blog\Controller\EntryController::class,
+                        'action'     => 'createEntry',
+                    ],
+                ],
+            ],
+            'editEntry' => [
+                'type'    => 'Segment',
+                'options' => [
+                    'route'    => '/editEntryPost[/:id]',
+                    'constraints' => [
+                        'id'     => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => \Blog\Controller\EntryController::class,
+                        'action'     => 'editEntry',
+                    ],
+                ],
+            ],
+            'addComment' => [
+                'type'    => 'Segment',
+                'options' => [
+                    'route'    => '/detailsPost[/:id]',
+                    'constraints' => [
+                        'id'     => '[0-9]+',
+                    ],
+                    'defaults' => [
+                        'controller' => \Blog\Controller\EntryController::class,
+                        'action'     => 'addComment',
                     ],
                 ],
             ],

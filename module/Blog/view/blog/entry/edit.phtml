@@ -8,7 +8,7 @@ $this->headTitle($title);
 <?php
 
 $this->form->prepare();
-//Todo: Set von Attributen und Values im Controller machen
+$this->form->setAttribute('action', $this->url('editEntry', ['id' => $this->id]));
 echo $this->form()->openTag($this->form);
 
 ?>
