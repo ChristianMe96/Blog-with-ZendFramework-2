@@ -31,9 +31,9 @@ return array(
     'router' => array(
         'routes' => array(
             'home' => array(
-                'type'    => 'Literal',
+                'type'    => 'Segment',
                 'options' => array(
-                    'route'    => '/',
+                    'route'    => '/[page/:page]',
                     'defaults' => array(
                         'controller' => \Blog\Controller\BlogController::class,
                         'action'     => 'index',
@@ -43,7 +43,7 @@ return array(
             'login' => [
                 'type'    => 'Literal',
                 'options' => [
-                    'route'    => '/login',
+                    'route'    => '/Login',
                     'defaults' => [
                         'controller' => Blog\Controller\UserController::class,
                         'action'     => 'login',
@@ -53,7 +53,7 @@ return array(
             'register' => [
                 'type'    => 'Segment',
                 'options' => [
-                    'route'    => '/register[/:error]',
+                    'route'    => '/Register[/:error]',
                     'defaults' => [
                         'controller' => Blog\Controller\UserController::class,
                         'action'     => 'register',
@@ -63,7 +63,7 @@ return array(
             'registration' => [
                 'type'    => 'Literal',
                 'options' => [
-                    'route'    => '/registration',
+                    'route'    => '/Registration',
                     'defaults' => [
                         'controller' => Blog\Controller\UserController::class,
                         'action'     => 'registration',
@@ -73,7 +73,7 @@ return array(
             'logout' => [
                 'type'    => 'Literal',
                 'options' => [
-                    'route'    => '/logout',
+                    'route'    => '/Logout',
                     'defaults' => [
                         'controller' => \Blog\Controller\UserController::class,
                         'action'     => 'logout',
@@ -129,7 +129,7 @@ return array(
             'entry' => [
                 'type'    => 'Segment',
                 'options' => [
-                    'route'    => '/entry[/:action][/:id]',
+                    'route'    => '/Entry[/:action][/:id]',
                     'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[0-9]+',

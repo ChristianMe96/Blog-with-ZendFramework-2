@@ -5,18 +5,24 @@ $this->headTitle($title);
 <h1 class="text-center"><?php echo $this->escapeHtml($title); ?></h1>
 
 
+<?php if (count($this->paginator)): ?>
+    <ul>
+        <?php foreach ($this->paginator as $entry): ?>
+            <?php echo $this->partial('blog/partial/entry.phtml', ['entry' => $entry])?>
 
-<?php foreach ($entries as $entry) : ?>
-    <?php echo $this->partial('blog/partial/entry.phtml', ['entry' => $entry])?>
+            <a href="<?php echo $this->url('entry', array('action'=>'details', 'id' => $entry->getId()));?>"
+               class="btn btn-default">Details Page</a>
+            <a href="<?php echo $this->url('entry',
+                array('action'=>'edit', 'id' => $entry->getId()));?>"
+               class="btn btn-default">Edit</a>
+            <a href="<?php echo $this->url('entry',
+                array('action'=>'delete', 'id' => $entry->getId()));?>"
+               class="btn btn-default">Delete</a>
+        <?php endforeach; ?>
+    </ul>
+<?php endif; ?>
 
-    <a href="<?php echo $this->url('entry', array('action'=>'details', 'id' => $entry->getId()));?>"
-       class="btn btn-default">Details Page</a>
-    <a href="<?php echo $this->url('entry',
-        array('action'=>'edit', 'id' => $entry->getId()));?>"
-       class="btn btn-default">Edit</a>
-    <a href="<?php echo $this->url('entry',
-        array('action'=>'delete', 'id' => $entry->getId()));?>"
-       class="btn btn-default">Delete</a>
-<?php endforeach; ?>
 
+
+<?php echo $this->partial('blog/partial/pagination.phtml', ['pages' => $this->pages])?>
 

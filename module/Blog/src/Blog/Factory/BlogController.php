@@ -2,9 +2,7 @@
 namespace Blog\Factory;
 
 
-use Blog\Entity\Comment;
 use Blog\Entity\Entry;
-use Blog\Entity\User;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 

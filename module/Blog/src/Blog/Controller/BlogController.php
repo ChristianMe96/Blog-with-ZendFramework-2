@@ -11,7 +11,10 @@ use Blog\InputFilter\LoginFilter;
 use Blog\Entity\User;
 use Blog\Service\BlogService;
 use Doctrine\ORM\EntityRepository;
+use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Paginator\Adapter\ArrayAdapter;
+use Zend\Paginator\Paginator;
 use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
 
@@ -27,11 +30,18 @@ class BlogController extends AbstractActionController
 
     public function indexAction()
     {
-        //Todo: Factory!  Repository übergeben nur die die benötigt werden !Done!
-        $entries = $this->entryRepo->findAll();
 
+        $page = (int) $this->params()->fromRoute('page', 0);
+
+        $entry = $this->entryRepo->findAll();
+
+        $adapter = new DoctrinePaginator(new \Doctrine\ORM\Tools\Pagination\Paginator($entry, false));
+        $paginator = new Paginator(new ArrayAdapter($entry));
+        $paginator->setCurrentPageNumber($page);
+        $paginator->setItemCountPerPage(3);
+        $pages = $paginator->getPages();
         return new ViewModel([
-            'entries' => $entries,
+            'paginator' => $paginator, "pages" => $pages
         ]);
 
     }

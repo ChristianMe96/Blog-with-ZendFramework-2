@@ -93,10 +93,9 @@ class UserController extends AbstractActionController
             case 'notValid':
                 $errorMessage = 'The Username or Password are not Valid!';
                 break;
-            default:
-                $errorMessage = false;
         }
-        return ['form' => $form, 'errorMessage' => $errorMessage];
+
+        return ['form' => $form, 'errorMessage' => (!$errorMessage) ? $errorMessage : ""];
     }
 
 }
