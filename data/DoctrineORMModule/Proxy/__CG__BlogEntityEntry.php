@@ -64,10 +64,10 @@ class Entry extends \Blog\Entity\Entry implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'title', 'content', 'date', 'authorId'];
+            return ['__isInitialized__', 'id', 'title', 'content', 'date', 'tags', 'authorId'];
         }
 
-        return ['__isInitialized__', 'id', 'title', 'content', 'date', 'authorId'];
+        return ['__isInitialized__', 'id', 'title', 'content', 'date', 'tags', 'authorId'];
     }
 
     /**
@@ -193,6 +193,28 @@ class Entry extends \Blog\Entity\Entry implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setId', [$id]);
 
         return parent::setId($id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getTags()
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getTags', []);
+
+        return parent::getTags();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setTags($tags): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setTags', [$tags]);
+
+        parent::setTags($tags);
     }
 
     /**

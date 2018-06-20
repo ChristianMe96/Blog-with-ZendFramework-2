@@ -26,10 +26,12 @@ class BlogService
     {
         $container = new Container('login');
         // Create new Post entity.
+        $tags = explode(',' , $data['tags']);
         $entry = new Entry();
         $entry->setTitle($data['title']);
         $entry->setContent($data['content']);
         $entry->setDate(date('Y-m-d H:i:s'));
+        $entry->setTags($tags);
 
         $user = $this->entityManager->find(User::class, $container->userId);
         $entry->setAuthorId($user);
@@ -58,9 +60,11 @@ class BlogService
     public function editEntry($data, $entry)
     {
         $container = new Container('login');
+        $tags = explode(',' , $data['tags']);
         $entry->setTitle($data['title']);
         $entry->setContent($data['content']);
         $entry->setDate(date('Y-m-d H:i:s'));
+        $entry->setTags($tags);
 
         $user = $this->entityManager->find(User::class, $container->userId);
         $entry->setAuthorId($user);

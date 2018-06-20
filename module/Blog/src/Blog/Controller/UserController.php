@@ -60,6 +60,7 @@ class UserController extends AbstractActionController
     {
         $container = new Container('login');
         $container->valid = false;
+        $container->userId = null;
         return $this->redirect()->toRoute('home');
     }
 

@@ -8,7 +8,6 @@ return array(
             //ToDo Factories anpassen Klassen referenz
             \Blog\Controller\EntryController::class => \Blog\Factory\EntryController::class,
             \Blog\Controller\BlogController::class => \Blog\Factory\BlogController::class,
-            \Blog\Controller\PostController::class => \Blog\Factory\PostController::class,
             \Blog\Controller\UserController::class => \Blog\Factory\UserController::class,
         ),
     ),
@@ -37,6 +36,16 @@ return array(
                     'defaults' => array(
                         'controller' => \Blog\Controller\BlogController::class,
                         'action'     => 'index',
+                    ),
+                ),
+            ),
+            'userEntries' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/userEntries[/:user]/[page/:page]',
+                    'defaults' => array(
+                        'controller' => \Blog\Controller\BlogController::class,
+                        'action'     => 'userEntries',
                     ),
                 ),
             ),

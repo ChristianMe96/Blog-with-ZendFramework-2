@@ -13,9 +13,11 @@ echo $this->form()->openTag($this->form);
 
 ?>
 
-<?php echo $this->bootstrapHelper()->formGroupDiv($this->formRow($this->form->get('title'))) ?>
+<?php echo $this->bootstrapHelper()->formGroupDiv($this->formRow($this->form->get('title'))); ?>
 
-<?php echo $this->bootstrapHelper()->formGroupDiv($this->formRow($this->form->get('content'))) ?>
+<?php echo $this->bootstrapHelper()->formGroupDiv($this->formRow($this->form->get('content'))); ?>
+
+<?php echo $this->bootstrapHelper()->formGroupDiv($this->formRow($this->form->get('tags'))); ?>
 
 <?php echo $this->formSubmit($this->form->get('submit')); ?>
 <?php echo $this->form()->closeTag(); ?>

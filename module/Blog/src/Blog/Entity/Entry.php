@@ -35,6 +35,11 @@ class Entry
     protected $date;
 
     /**
+     * @ORM\Column(type="simple_array")
+     */
+    protected $tags;
+
+    /**
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumn(name="authorId", referencedColumnName="id")
      */
@@ -55,6 +60,22 @@ class Entry
     public function setId($id)
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param mixed $tags
+     */
+    public function setTags($tags): void
+    {
+        $this->tags = $tags;
     }
 
 

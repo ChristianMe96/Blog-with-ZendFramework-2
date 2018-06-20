@@ -36,11 +36,15 @@ class EntryForm extends Form
             'rows' => 10,
             'cols' => 60
         ]);
-        /*
-        $authorInput = new Element\Hidden();
-        $authorInput->setName('authorId');
-        $authorInput->setAttribute('class','form-control');
-        */
+
+        $tagsInput = new Element\Text();
+        $tagsInput->setName('tags');
+        $tagsInput->setLabel('Tags');
+        $tagsInput->setAttributes([
+            'class' => 'form-control',
+            'placeholder' => 'comma, separated, list!!',
+        ]);
+
         $submit = new Element\Submit();
         $submit->setName('submit');
         $submit->setAttributes([
@@ -49,7 +53,7 @@ class EntryForm extends Form
             'class' => 'btn  btn-default',
         ]);
 
-        $this->add($titleInput)->add($contentInput)->add($submit);
+        $this->add($titleInput)->add($contentInput)->add($tagsInput)->add($submit);
 
     }
 }

@@ -17,6 +17,7 @@ use Blog\InputFilter\EntryFilter;
 use Blog\Service\BlogService;
 use Doctrine\ORM\EntityRepository;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
 
 class EntryController extends AbstractActionController
@@ -46,12 +47,20 @@ class EntryController extends AbstractActionController
         //Find existing Entry
         $entry = $this->entryRepo->find($id);
 
+        $container = new Container('login');
+        $userId = $container->userId;
+
+        if ($entry->getAuthorId()->getId() != $userId) {
+            $this->redirect()->toRoute('home');
+        }
+
         //Create Form
         $form  = new EntryForm();
         //in view schreiben
         $form->get('submit')->setAttribute('value', 'Edit');
         $form->get('title')->setValue($entry->getTitle());
         $form->get('content')->setValue($entry->getContent());
+        $form->get('tags')->setValue(implode(',', $entry->getTags()));
 
         return new ViewModel(['entry' => $entry, 'form' => $form, 'id' => $id]);
     }
@@ -110,6 +119,14 @@ class EntryController extends AbstractActionController
         $form = new DeleteForm();
         $id = (int) $this->params()->fromRoute('id', 0);
         $entry = $this->entryRepo->find($id);
+
+        $container = new Container('login');
+        $userId = $container->userId;
+
+        if ($entry->getAuthorId()->getId() != $userId) {
+            $this->redirect()->toRoute('home');
+        }
+
         $request = $this->getRequest();
         if ($request->isPost()){
             $post = $request->getPost('deleteYes', 'No');//No = default Value if DeleteYes is missing

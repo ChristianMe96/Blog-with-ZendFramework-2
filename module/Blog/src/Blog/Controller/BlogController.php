@@ -3,17 +3,12 @@
 namespace Blog\Controller;
 
 
-use Blog\Form\DeleteForm;
-use Blog\Form\EntryForm;
-use Blog\Form\LoginForm;
-use Blog\InputFilter\EntryFilter;
-use Blog\InputFilter\LoginFilter;
-use Blog\Entity\User;
-use Blog\Service\BlogService;
-use Doctrine\ORM\EntityRepository;
+
+use Blog\Repository\Entry;
+
+use Doctrine\ORM\Tools\Pagination\Paginator as ORMPaginator;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Paginator\Adapter\ArrayAdapter;
 use Zend\Paginator\Paginator;
 use Zend\Session\Container;
 use Zend\View\Model\ViewModel;
@@ -23,7 +18,7 @@ class BlogController extends AbstractActionController
 
     private $entryRepo;
 
-    public function __construct(EntityRepository $entryRepo)
+    public function __construct(Entry $entryRepo)
     {
         $this->entryRepo = $entryRepo;
     }
@@ -31,18 +26,45 @@ class BlogController extends AbstractActionController
     public function indexAction()
     {
 
-        $page = (int) $this->params()->fromRoute('page', 0);
+        $page = (int) $this->params()->fromRoute('page', 1);
 
-        $entry = $this->entryRepo->findAll();
 
-        $adapter = new DoctrinePaginator(new \Doctrine\ORM\Tools\Pagination\Paginator($entry, false));
-        $paginator = new Paginator(new ArrayAdapter($entry));
+        $tagQuery = $this->entryRepo->getTagsSortedByFrequency();
+        $tags = $tagQuery->getResult();
+        var_dump($tags[0]['tags'][0]);
+
+        $query = $this->entryRepo->getEntriesDesc();
+        $adapter = new DoctrinePaginator(new ORMPaginator($query, false));
+        $paginator = new Paginator($adapter);
+        $container = new Container('login');
+        $userId = $container->userId;
         $paginator->setCurrentPageNumber($page);
         $paginator->setItemCountPerPage(3);
-        $pages = $paginator->getPages();
+        $pages = $paginator->getCurrentItems();
+
         return new ViewModel([
-            'paginator' => $paginator, "pages" => $pages
+            'paginator' => $paginator, "pages" => $pages, "currentUserId" => $userId
         ]);
 
+    }
+
+    public function userEntriesAction()
+    {
+        $username = $this->params()->fromRoute('user');
+
+        $page = (int) $this->params()->fromRoute('page', 1);
+
+        $query = $this->entryRepo->getWhereUsername($username);
+        $adapter = new DoctrinePaginator(new ORMPaginator($query, false));
+        $paginator = new Paginator($adapter);
+        $container = new Container('login');
+        $userId = $container->userId;
+        $paginator->setCurrentPageNumber($page);
+        $paginator->setItemCountPerPage(3);
+        $pages = $paginator->getCurrentItems();
+
+        return new ViewModel([
+            'paginator' => $paginator, "pages" => $pages, "currentUserId" => $userId
+        ]);
     }
 }

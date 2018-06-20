@@ -1,0 +1,52 @@
+<?php
+$title = '';
+$this->headTitle($title);
+?>
+    <h1 class="text-center"><?php echo $this->escapeHtml($title); ?></h1>
+
+
+<?php if (count($this->paginator)): ?>
+    <div class="row">
+        <div class="col-lg-8">
+            <?php foreach ($this->paginator as $entry): ?>
+                <?php echo $this->partial('blog/partial/entry.phtml', ['entry' => $entry])?>
+
+                <a href="<?php echo $this->url('entry', array('action'=>'details', 'id' => $entry->getId()));?>"
+                   class="btn btn-default">Details Page</a>
+                <?php if ($this->currentUserId == $entry->getAuthorId()->getId()) : ?>
+                    <a href="<?php echo $this->url('entry',
+                        array('action'=>'edit', 'id' => $entry->getId()));?>"
+                       class="btn btn-default">Edit</a>
+                    <a href="<?php echo $this->url('entry',
+                        array('action'=>'delete', 'id' => $entry->getId()));?>"
+                       class="btn btn-default">Delete</a>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Popular Tags</h3>
+                </div>
+                <div class="panel-body">
+                    <?php foreach($this->tagCloud as $tagName=>$frequency): ?>
+
+                        <a href="<?= $this->url('application', ['action'=>'index'],
+                            ['query'=>['tag'=>$tagName]]); ?>">
+
+                    <span style="font-size:{{{PHP12}}}em">
+                        <?= $this->escapeHtml($tagName); ?>
+                    </span>
+
+                        </a>
+
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
+
+
+
+<?= $this->paginationControl($this->paginator, 'Sliding', 'blog/partial/pagination', ['route' => 'userEntries', 'user' => $this->pages[0]->getAuthorId()->getUsername()]) ?>

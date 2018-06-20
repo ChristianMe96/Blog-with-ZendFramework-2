@@ -1,21 +1,19 @@
-<div class="row">
-    <div class="col-lg-12">
-            <h1 class="mt-4">
-                <?php echo $this->escapeHtml($this->entry->getTitle());?>
-            </h1>
-    <p class="lead"> by
-        <a href="#">
-            <?php echo $this->escapeHtml($this->entry->getAuthorId()->getUsername());?>
-        </a>
-    </p>
-    <hr>
-    <p>
-        Posted on <?php echo $this->escapeHtml(date('d.m.Y',strtotime($this->entry->getDate()))) ?>
-    </p>
-    <hr>
-    <p>
-        <?php echo $this->escapeHtml($this->entry->getContent());?>
-    </p>
-    <hr>
-    </div>
-</div>
+
+        <h1 class="mt-4">
+            <?php echo $this->escapeHtml($this->entry->getTitle());?>
+        </h1>
+<p class="lead"> by
+    <a href="<?= $this->url('userEntries', ['user' =>  $this->entry->getAuthorId()->getUsername()])?>">
+        <?php echo $this->escapeHtml($this->entry->getAuthorId()->getUsername());?>
+    </a>
+     Tags: <?php echo $this->escapeHtml(implode(',' , $this->entry->getTags()));?>
+</p>
+<hr>
+<p>
+    Posted on <?php echo $this->escapeHtml(date('d.m.Y',strtotime($this->entry->getDate()))) ?>
+</p>
+<hr>
+<p>
+    <?php echo $this->escapeHtml($this->entry->getContent());?>
+</p>
+<hr>
