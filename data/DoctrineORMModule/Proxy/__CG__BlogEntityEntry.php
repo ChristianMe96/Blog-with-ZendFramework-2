@@ -64,10 +64,10 @@ class Entry extends \Blog\Entity\Entry implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'title', 'content', 'date', 'tags', 'authorId'];
+            return ['__isInitialized__', 'id', 'title', 'content', 'date', 'author', 'tags', 'comments'];
         }
 
-        return ['__isInitialized__', 'id', 'title', 'content', 'date', 'tags', 'authorId'];
+        return ['__isInitialized__', 'id', 'title', 'content', 'date', 'author', 'tags', 'comments'];
     }
 
     /**
@@ -187,6 +187,17 @@ class Entry extends \Blog\Entity\Entry implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
+    public function addTag(\Blog\Entity\Tag $tag)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addTag', [$tag]);
+
+        return parent::addTag($tag);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setId($id)
     {
 
@@ -301,23 +312,23 @@ class Entry extends \Blog\Entity\Entry implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getAuthorId()
+    public function getAuthor()
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAuthorId', []);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getAuthor', []);
 
-        return parent::getAuthorId();
+        return parent::getAuthor();
     }
 
     /**
      * {@inheritDoc}
      */
-    public function setAuthorId($authorId)
+    public function setAuthor(\Blog\Entity\User $author): void
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAuthorId', [$authorId]);
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setAuthor', [$author]);
 
-        return parent::setAuthorId($authorId);
+        parent::setAuthor($author);
     }
 
 }

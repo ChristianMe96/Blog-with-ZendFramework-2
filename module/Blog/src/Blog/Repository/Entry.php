@@ -10,11 +10,12 @@ namespace Blog\Repository;
 
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 
 class Entry extends EntityRepository
 {
-    public function getEntriesDesc()
+    public function getEntriesWithLimit($currentPage , $limit)
     {
         $entityManager = $this->getEntityManager();
 
@@ -22,7 +23,9 @@ class Entry extends EntityRepository
 
         $queryBuilder->select('e')
             ->from(\Blog\Entity\Entry::class, 'e')
-            ->orderBy('e.date', "DESC");
+            ->orderBy('e.date', "DESC")
+            ->setFirstResult($limit * ($currentPage -1))//offset
+            ->setMaxResults($limit);//limit;
 
         return $queryBuilder->getQuery();
     }
@@ -34,7 +37,7 @@ class Entry extends EntityRepository
 
         $queryBuilder->select('e')
             ->from(\Blog\Entity\Entry::class, 'e')
-            ->innerJoin('e.authorId', 'u')
+            ->innerJoin('e.author', 'u')
             ->where('u.username = :username')
             ->orderBy('e.date', "DESC")
             ->setParameter('username', $username);
@@ -42,15 +45,33 @@ class Entry extends EntityRepository
         return $queryBuilder->getQuery();
     }
 
-    public function getTagsSortedByFrequency()
+    public function findEntriesWithTags()
     {
         $entityManager = $this->getEntityManager();
         $queryBuilder = $entityManager->createQueryBuilder();
 
-        $queryBuilder->select('e.tags')
-            ->from(\Blog\Entity\Entry::class, 'e');
+        $queryBuilder->select('e')
+            ->from(\Blog\Entity\Entry::class, 'e')
+            ->join('e.tags', 't')
+            ->orderBy('e.date', 'DESC');
 
-        #var_dump($queryBuilder->getQuery());
+
+        return $queryBuilder->getQuery();
+    }
+
+    public function findEntriesByTag($tagName)
+    {
+        $entityManager = $this->getEntityManager();
+
+        $queryBuilder = $entityManager->createQueryBuilder();
+
+        $queryBuilder->select('e')
+            ->from(\Blog\Entity\Entry::class, 'e')
+            ->join('e.tags', 't')
+            ->andWhere('t.name = :tagName')
+            ->orderBy('e.date', 'DESC')
+            ->setParameter('tagName', $tagName);
+
         return $queryBuilder->getQuery();
     }
 }

@@ -12,9 +12,10 @@ class BlogController implements FactoryInterface
     {
         $sm = $serviceLocator->getServiceLocator();
         $entityManager = $sm->get("doctrine.entitymanager.orm_default");
+        $blogService = $sm->get(\Blog\Service\BlogService::class);
 
         return new \Blog\Controller\BlogController(
-            $entityManager->getRepository(Entry::class)
+            $entityManager->getRepository(Entry::class), $blogService
         );
     }
 }

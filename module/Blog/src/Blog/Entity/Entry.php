@@ -2,6 +2,7 @@
 
 namespace Blog\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,15 +36,29 @@ class Entry
     protected $date;
 
     /**
-     * @ORM\Column(type="simple_array")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="entries", fetch="EXTRA_LAZY")
+     * @ORM\JoinColumn(name="author", referencedColumnName="id")
+     */
+    protected $author;
+
+    /**
+     * Many Entries has Many Tags.
+     * @ORM\ManyToMany(targetEntity="Tag", inversedBy="entries",cascade={"persist", "remove"})
+     * @ORM\JoinTable(name="entry_tag")
      */
     protected $tags;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="authorId", referencedColumnName="id")
+     * One Entry has Many Comments.
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="entry",cascade={"persist", "remove"})
      */
-    protected $authorId;
+    protected $comments;
+
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+    }
 
     public function exchangeArray($data)
     {
@@ -51,7 +66,13 @@ class Entry
         $this->title  = (!empty($data['title'])) ? $data['title'] : null;
         $this->content = (!empty($data['content'])) ? $data['content'] : null;
         $this->date  = (!empty($data['date'])) ? $data['date'] : null;
-        $this->authorId  = (!empty($data['authorId'])) ? $data['authorId'] : null;
+        $this->author  = (!empty($data['authorId'])) ? $data['authorId'] : null;
+    }
+
+    public function addTag(Tag $tag)
+    {
+        $tag->addEntry($this);// synchronously updating inverse side
+        $this->tags[] = $tag;
     }
 
     /**
@@ -136,20 +157,21 @@ class Entry
     }
 
     /**
-     * @return integer
+     * @return User
      */
-    public function getAuthorId()
+    public function getAuthor()
     {
-        return $this->authorId;
+        return $this->author;
     }
 
     /**
-     * @param integer $authorId
+     * @param User $author
      */
-    public function setAuthorId($authorId)
+    public function setAuthor(User $author): void
     {
-        $this->authorId = $authorId;
+        $this->author = $author;
     }
+
 
 
 

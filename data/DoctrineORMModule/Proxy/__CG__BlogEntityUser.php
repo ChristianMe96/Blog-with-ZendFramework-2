@@ -64,10 +64,10 @@ class User extends \Blog\Entity\User implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'username', 'password'];
+            return ['__isInitialized__', 'id', 'username', 'entries', 'password'];
         }
 
-        return ['__isInitialized__', 'id', 'username', 'password'];
+        return ['__isInitialized__', 'id', 'username', 'entries', 'password'];
     }
 
     /**
@@ -173,6 +173,28 @@ class User extends \Blog\Entity\User implements \Doctrine\ORM\Proxy\Proxy
     }
 
     
+    /**
+     * {@inheritDoc}
+     */
+    public function getEntries(): \Blog\Entity\Entry
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getEntries', []);
+
+        return parent::getEntries();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setEntries(\Blog\Entity\Entry $entries): void
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEntries', [$entries]);
+
+        parent::setEntries($entries);
+    }
+
     /**
      * {@inheritDoc}
      */

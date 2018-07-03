@@ -11,17 +11,7 @@ class EntryForm extends Form
 {
     public function __construct($name = null)
     {
-        // we want to ignore the name passed
         parent::__construct('entry');
-
-        /*
-        $dateInputHidden = new Element\Hidden();
-        $dateInputHidden->setName('date');
-        $dateInputHidden->setValue(date("Y-m-d H:i:s"));
-        */
-
-        //ToDo: Fieldset benutzen
-        //$divFormGroup = new
 
         $titleInput = new Element\Text();
         $titleInput->setName('title');

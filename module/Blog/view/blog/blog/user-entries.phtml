@@ -1,4 +1,7 @@
 <?php
+/**
+ * @var $entry \Blog\Entity\Entry
+ */
 $title = '';
 $this->headTitle($title);
 ?>
@@ -11,14 +14,14 @@ $this->headTitle($title);
             <?php foreach ($this->paginator as $entry): ?>
                 <?php echo $this->partial('blog/partial/entry.phtml', ['entry' => $entry])?>
 
-                <a href="<?php echo $this->url('entry', array('action'=>'details', 'id' => $entry->getId()));?>"
+                <a href="<?php echo $this->url('entry/details', array('id' => $entry->getId()));?>"
                    class="btn btn-default">Details Page</a>
-                <?php if ($this->currentUserId == $entry->getAuthorId()->getId()) : ?>
-                    <a href="<?php echo $this->url('entry',
-                        array('action'=>'edit', 'id' => $entry->getId()));?>"
+                <?php if ($this->currentUserId == $entry->getAuthor()->getId()) : ?>
+                    <a href="<?php echo $this->url('entry/edit',
+                        array('id' => $entry->getId()));?>"
                        class="btn btn-default">Edit</a>
-                    <a href="<?php echo $this->url('entry',
-                        array('action'=>'delete', 'id' => $entry->getId()));?>"
+                    <a href="<?php echo $this->url('entry/delete',
+                        array('id' => $entry->getId()));?>"
                        class="btn btn-default">Delete</a>
                 <?php endif; ?>
             <?php endforeach; ?>
@@ -29,17 +32,10 @@ $this->headTitle($title);
                     <h3 class="panel-title">Popular Tags</h3>
                 </div>
                 <div class="panel-body">
-                    <?php foreach($this->tagCloud as $tagName=>$frequency): ?>
-
-                        <a href="<?= $this->url('application', ['action'=>'index'],
-                            ['query'=>['tag'=>$tagName]]); ?>">
-
-                    <span style="font-size:{{{PHP12}}}em">
-                        <?= $this->escapeHtml($tagName); ?>
-                    </span>
-
+                    <?php foreach($this->tagCloud as $tagName => $frequency): ?>
+                        <a href="<?= $this->url('home/tag', ['tag' => $tagName]); ?>">
+                            <?= $this->escapeHtml($tagName); ?>
                         </a>
-
                     <?php endforeach; ?>
                 </div>
             </div>
@@ -49,4 +45,4 @@ $this->headTitle($title);
 
 
 
-<?= $this->paginationControl($this->paginator, 'Sliding', 'blog/partial/pagination', ['route' => 'userEntries', 'user' => $this->pages[0]->getAuthorId()->getUsername()]) ?>
+<?= $this->paginationControl($this->paginator, 'Sliding', 'blog/partial/pagination', ['route' => 'home/userEntries', 'user' => $this->username]) ?>

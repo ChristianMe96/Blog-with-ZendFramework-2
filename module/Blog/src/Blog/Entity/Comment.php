@@ -31,10 +31,11 @@ class Comment
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Entry")
-     * @ORM\JoinColumn(name="entryId", referencedColumnName="id")
+     * Many Features have One Product.
+     * @ORM\ManyToOne(targetEntity="Entry", inversedBy="comments")
+     * @ORM\JoinColumn(name="productId", referencedColumnName="id")
      */
-    private $entryId;
+    private $entry;
 
     /**
      * @ORM\Column(type="string")
@@ -85,18 +86,18 @@ class Comment
     /**
      * @return mixed
      */
-    public function getEntryId()
+    public function getEntry()
     {
-        return $this->entryId;
+        return $this->entry;
     }
 
     /**
-     * @param mixed $entryId
+     * @param mixed $entry
      * @return Comment
      */
-    public function setEntryId($entryId)
+    public function setEntry($entry)
     {
-        $this->entryId = $entryId;
+        $this->entry = $entry;
         return $this;
     }
 

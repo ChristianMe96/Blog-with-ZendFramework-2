@@ -44,7 +44,7 @@
                             <li><a href="<?php echo $this->url('login', array('action'=>'login')) ?>"><?php echo $this->translate('Login') ?></a></li>
                             <li><a href="<?php echo $this->url('register', array('action'=>'register')) ?>"><?php echo $this->translate('Register') ?></a></li>
                         <?php else : ?>
-                            <li><a href="<?php echo $this->url('entry', array('action'=>'add')) ?>"><?php echo $this->translate('Add Entry') ?></a></li>
+                            <li><a href="<?php echo $this->url('entry/add')?>"><?php echo $this->translate('Add Entry') ?></a></li>
                             <li><a href="<?php echo $this->url('logout', array('action'=>'logout')) ?>"><?php echo $this->translate('Logout') ?></a></li>
                         <?php endif; ?>
                     </ul>
@@ -52,6 +52,19 @@
             </div>
         </nav>
         <div class="container">
+            <?php
+            $flash = $this->flashMessenger();
+            $flash->setMessageOpenFormat('<div%s>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+            &times;
+        </button>
+        <div>')->setMessageCloseString('</div></div>');
+
+            echo $flash->render('error', ['alert', 'alert-dismissable', 'alert-danger']);
+            echo $flash->render('info', ['alert', 'alert-dismissable', 'alert-info']);
+            echo $flash->render('default', ['alert', 'alert-dismissable', 'alert-warning']);
+            echo $flash->render('success', ['alert', 'alert-dismissable', 'alert-success']);
+            ?>
             <?php echo $this->content; ?>
             <!-- <hr> -->
             <footer>

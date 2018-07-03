@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
 
 class User
 {
+
+    //ToDo: relation zu Entry erstellen
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -20,10 +22,32 @@ class User
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", unique=true)
      */
 
     protected $username;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Entry", mappedBy="author")
+     * @var Entry
+     */
+    protected $entries;
+
+    /**
+     * @return Entry
+     */
+    public function getEntries(): Entry
+    {
+        return $this->entries;
+    }
+
+    /**
+     * @param Entry $entries
+     */
+    public function setEntries(Entry $entries): void
+    {
+        $this->entries = $entries;
+    }
 
     /**
      * @param mixed $username

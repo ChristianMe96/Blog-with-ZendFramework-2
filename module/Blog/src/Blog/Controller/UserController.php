@@ -10,10 +10,13 @@ namespace Blog\Controller;
 
 
 use Blog\Entity\User;
+use Blog\Exception\UsernameAlreadyExists;
+use Blog\Exception\WrongLoginCredentials;
 use Blog\Form\LoginForm;
 use Blog\InputFilter\LoginFilter;
 use Blog\Service\BlogService;
 use Doctrine\ORM\EntityRepository;
+use MongoDB\Driver\Exception\ExecutionTimeoutException;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Session\Container;
 
@@ -22,7 +25,7 @@ class UserController extends AbstractActionController
     private $userRepo;
     private $blogService;
 
-    public function __construct(EntityRepository $userRepo, BlogService $blogService)
+    public function __construct(\Blog\Repository\User $userRepo, BlogService $blogService)
     {
         $this->userRepo = $userRepo;
         $this->blogService = $blogService;
@@ -38,13 +41,13 @@ class UserController extends AbstractActionController
         if ($loginForm->isValid()) {
             $user = new User();
             $user->setUsername($loginForm->getData()['username'])->setPassword($loginForm->getData()['password']);
-            $userDb = $this->userRepo->findOneBy(['username' => $user->getUsername()]);
-            if ($userDb != false && $user->getUsername() === $userDb->getUsername() && password_verify($user->getPassword(), $userDb->getPassword())){
-                $container = new Container('login');
-                $container->valid = true;
-                $container->userId = $userDb->getId();
-                // Redirect to list of Entries
+            try {
+                $this->userRepo->verifyLoginCredentials($user);
                 return $this->redirect()->toRoute('home');
+            }catch (WrongLoginCredentials $w){
+                $this->flashMessenger()->setNamespace('error')->addMessage('Wrong Username or Password !!');
+            }catch (\Exception $e){
+                $this->flashMessenger()->setNamespace('error')->addMessage('SIKERIM !!');
             }
         }
         return $this->redirect()->toRoute('login');
@@ -72,31 +75,25 @@ class UserController extends AbstractActionController
         $loginForm->setInputFilter($loginFilter->getInputFilter());
         $loginForm->setData($request->getPost());
         if ($loginForm->isValid()) {
-            $username = $loginForm->getData()['username'];
-            if ($this->userRepo->findOneBy(['username' => $username])){
-                return $this->redirect()->toRoute('register', ['error' => 'userExist']);
+            //ToDo: Flash Messages
+            try {
+                $this->blogService->addNewUser($loginForm->getData());
+            }catch (UsernameAlreadyExists $e){
+                $this->flashMessenger()->setNamespace('error')->addMessage('Username already exists!');
             }
-            $this->blogService->addNewUser($loginForm->getData());
+
             return $this->redirect()->toRoute('login');
         }
-        return $this->redirect()->toRoute('register', ['error' => 'notValid']);
+        $this->flashMessenger()->setNamespace('error')->addMessage('The Username or Password are not Valid!');
+        return $this->redirect()->toRoute('register');
     }
 
     public function registerAction()
     {
         $form = new LoginForm();
         $form->get('submit')->setAttribute('value', 'Register');
-        $error = $this->params()->fromRoute('error', 0);
-        switch ($error) {
-            case 'userExist':
-                $errorMessage = 'Username already exists!!';
-                break;
-            case 'notValid':
-                $errorMessage = 'The Username or Password are not Valid!';
-                break;
-        }
 
-        return ['form' => $form, 'errorMessage' => (!$errorMessage) ? $errorMessage : ""];
+        return ['form' => $form];
     }
 
 }

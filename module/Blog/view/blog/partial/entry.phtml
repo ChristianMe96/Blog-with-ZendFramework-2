@@ -1,12 +1,20 @@
+<?php
 
-        <h1 class="mt-4">
-            <?php echo $this->escapeHtml($this->entry->getTitle());?>
-        </h1>
+$tags = [];
+/** @var $tag \Blog\Entity\Tag */
+foreach ($this->entry->getTags() as $tag) {
+    array_push($tags,$tag->getName());
+}
+?>
+
+<h1 class="mt-4">
+    <?php echo $this->escapeHtml($this->entry->getTitle());?>
+</h1>
 <p class="lead"> by
-    <a href="<?= $this->url('userEntries', ['user' =>  $this->entry->getAuthorId()->getUsername()])?>">
-        <?php echo $this->escapeHtml($this->entry->getAuthorId()->getUsername());?>
+    <a href="<?= $this->url('home/userEntries', ['user' =>  $this->entry->getAuthor()->getUsername()])?>">
+        <?php echo $this->escapeHtml($this->entry->getAuthor()->getUsername());?>
     </a>
-     Tags: <?php echo $this->escapeHtml(implode(',' , $this->entry->getTags()));?>
+    Tags: <?php echo $this->escapeHtml(implode(',' , $tags));?>
 </p>
 <hr>
 <p>
