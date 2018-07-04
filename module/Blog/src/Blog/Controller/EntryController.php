@@ -61,6 +61,11 @@ class EntryController extends AbstractActionController
         if ($entry->getAuthor()->getId() != $userId) {
             $this->redirect()->toRoute('home');
         }
+        $tags = [];
+        /** @var $tag \Blog\Entity\Tag */
+        foreach ($entry->getTags() as $tag) {
+            array_push($tags,$tag->getName());
+        }
 
         //Create Form
         $form  = new EntryForm();
@@ -68,7 +73,7 @@ class EntryController extends AbstractActionController
         $form->get('submit')->setAttribute('value', 'Edit');
         $form->get('title')->setValue($entry->getTitle());
         $form->get('content')->setValue($entry->getContent());
-        $form->get('tags')->setValue(implode(',', $entry->getTags()));
+        $form->get('tags')->setValue(implode(',', $tags));
 
         return new ViewModel(['entry' => $entry, 'form' => $form, 'id' => $id]);
     }
@@ -85,7 +90,7 @@ class EntryController extends AbstractActionController
             // Redirect to list of Entries
             return $this->redirect()->toRoute('home');
         }
-        return $this->redirect()->toRoute('entry');
+        return $this->redirect()->toRoute('entry/add/get');
     }
     public function addCommentAction()
     {
@@ -100,7 +105,7 @@ class EntryController extends AbstractActionController
             // Redirect to list of Entries
             $entry = $this->entryRepo->find($id);
             $this->blogService->addNewComment($form->getData(), $entry);
-            return $this->redirect()->toRoute('entry/details', ['id' => $id]);
+            return $this->redirect()->toRoute('entry/details/get', ['id' => $id]);
         }
     }
 
@@ -118,7 +123,7 @@ class EntryController extends AbstractActionController
             // Redirect to list of Entries
             return $this->redirect()->toRoute('home');
         }
-        return $this->redirect()->toRoute('entry/edit', ['id' => $id]);
+        return $this->redirect()->toRoute('entry/edit/get', ['id' => $id]);
     }
 
     public function deleteAction()

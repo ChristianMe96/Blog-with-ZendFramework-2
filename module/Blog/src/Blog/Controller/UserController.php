@@ -50,7 +50,7 @@ class UserController extends AbstractActionController
                 $this->flashMessenger()->setNamespace('error')->addMessage('SIKERIM !!');
             }
         }
-        return $this->redirect()->toRoute('login');
+        return $this->redirect()->toRoute('login/get');
     }
 
     public function loginAction()
@@ -82,7 +82,7 @@ class UserController extends AbstractActionController
                 $this->flashMessenger()->setNamespace('error')->addMessage('Username already exists!');
             }
 
-            return $this->redirect()->toRoute('login');
+            return $this->redirect()->toRoute('login/get');
         }
         $this->flashMessenger()->setNamespace('error')->addMessage('The Username or Password are not Valid!');
         return $this->redirect()->toRoute('register');

@@ -75,6 +75,12 @@ class Entry
         $this->tags[] = $tag;
     }
 
+    // Removes association between this post and the given tag.
+    public function removeTagAssociation($tag)
+    {
+        $this->tags->removeElement($tag);
+    }
+
     /**
      * @param integer $id
      */

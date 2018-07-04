@@ -67,12 +67,23 @@ class BlogService
         $entry->setTitle($data['title']);
         $entry->setContent($data['content']);
         $entry->setDate(date('Y-m-d H:i:s'));
-        $entry = $this->addNewTags($data['tags'], $entry);
+        $entry = $this->updateTags($data['tags'], $entry);
 
         $user = $this->entityManager->getRepository(User::class)->find($container->userId);
         $entry->setAuthor($user);
 
         $this->entityManager->flush();
+    }
+
+    public function updateTags($data, $entry)
+    {
+        /** @var $entry Entry */
+        $tags = $entry->getTags();
+        foreach ($tags as $tag) {
+            $entry->removeTagAssociation($tag);
+        }
+
+        return $this->addNewTags($data, $entry);
     }
 
     public function deleteEntry($entry)
@@ -108,7 +119,6 @@ class BlogService
 
             $entry->addTag($newTag);
         }
-
         return $entry;
     }
 

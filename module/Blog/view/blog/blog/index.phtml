@@ -16,10 +16,10 @@ $this->headTitle($title);
             <?php foreach ($this->paginator as $entry): ?>
                 <?php echo $this->partial('blog/partial/entry.phtml', ['entry' => $entry])?>
 
-                <a href="<?php echo $this->url('entry/details', array('id' => $entry->getId()));?>"
+                <a href="<?php echo $this->url('entry/details/get', array('id' => $entry->getId()));?>"
                    class="btn btn-default">Details Page</a>
                 <?php if ($this->currentUserId == $entry->getAuthor()->getId()) : ?>
-                    <a href="<?php echo $this->url('entry/edit',
+                    <a href="<?php echo $this->url('entry/edit/get',
                         array('id' => $entry->getId()));?>"
                        class="btn btn-default">Edit</a>
                     <a href="<?php echo $this->url('entry/delete',

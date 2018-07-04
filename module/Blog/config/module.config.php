@@ -34,8 +34,38 @@ return [
     */
     'router' => [
         'routes' => [
+            'login' => [
+                'type' => \Zend\Mvc\Router\Http\Literal::class,
+                'options' => [
+                    'route' => '/login',
+                    'defaults' => [
+                        'controller' => Blog\Controller\UserController::class,
+                    ],
+                ],
+                'may_terminate' => false,
+                'child_routes' => [
+                    'get' => [
+                        'type' => \Zend\Mvc\Router\Http\Method::class,
+                        'options' => [
+                            'verb' => 'get',
+                            'defaults' => [
+                                'action' => 'login'
+                            ],
+                        ],
+                    ],
+                    'post' => [
+                        'type' => \Zend\Mvc\Router\Http\Method::class,
+                        'options' => [
+                            'verb' => 'post',
+                            'defaults' => [
+                                'action' => 'processLogin'
+                            ],
+                        ],
+                    ],
+                ],
+            ],
             'home' => [
-                'type' => 'Literal',
+                'type' => 'literal',
                 'options' => [
                     'route' => '/blog',
                     'defaults' => [
@@ -80,33 +110,34 @@ return [
                     ],
                 ],
             ],
-            'login' => [
-                'type' => 'Literal',
-                'options' => [
-                    'route' => '/login',
-                    'defaults' => [
-                        'controller' => Blog\Controller\UserController::class,
-                        'action' => 'login',
-                    ],
-                ],
-            ],
+
             'register' => [
-                'type' => 'Segment',
-                'options' => [
-                    'route' => '/register[/:error]',
-                    'defaults' => [
-                        'controller' => Blog\Controller\UserController::class,
-                        'action' => 'register',
-                    ],
-                ],
-            ],
-            'registration' => [
                 'type' => 'Literal',
                 'options' => [
-                    'route' => '/registration',
+                    'route' => '/register',
                     'defaults' => [
                         'controller' => Blog\Controller\UserController::class,
-                        'action' => 'registration',
+                    ],
+                ],
+                'may_terminate' => false,
+                'child_routes' => [
+                    'get' => [
+                        'type' => \Zend\Mvc\Router\Http\Method::class,
+                        'options' => [
+                            'verb' => 'get',
+                            'defaults' => [
+                                'action' => 'register',
+                            ],
+                        ],
+                    ],
+                    'post' => [
+                        'type' => \Zend\Mvc\Router\Http\Method::class,
+                        'options' => [
+                            'verb' => 'post',
+                            'defaults' => [
+                                'action' => 'registration',
+                            ],
+                        ],
                     ],
                 ],
             ],
@@ -120,70 +151,28 @@ return [
                     ],
                 ],
             ],
-            'processLogin' => [
-                'type' => 'Literal',
-                'options' => [
-                    'route' => '/login-post',
-                    'defaults' => [
-                        'controller' => \Blog\Controller\UserController::class,
-                        'action' => 'processLogin',
-                    ],
-                ],
-            ],
-            'editEntry' => [
-                'type' => 'Segment',
-                'options' => [
-                    'route' => '/edit-entry-post[/:id]',
-                    'constraints' => [
-                        'id' => '[0-9]+',
-                    ],
-                    'defaults' => [
-                        'controller' => \Blog\Controller\EntryController::class,
-                        'action' => 'editEntry',
-                    ],
-                ],
-            ],
-            'addComment' => [
-                'type' => 'Segment',
-                'options' => [
-                    'route' => '/details-post[/:id]',
-                    'constraints' => [
-                        'id' => '[0-9]+',
-                    ],
-                    'defaults' => [
-                        'controller' => \Blog\Controller\EntryController::class,
-                        'action' => 'addComment',
-                    ],
-                ],
-            ],
             'entry' => [
                 'type' => 'Literal',
                 'options' => [
                     'route' => '/entry',
                     'defaults' => [
                         'controller' => \Blog\Controller\EntryController::class,
-                        'action' => 'add',
                     ],
                 ],
-                'may_terminate' => true,
+                'may_terminate' => false,
                 'child_routes' => [
                     'add' => [
-                        'type' => \Zend\Mvc\Router\Http\Segment::class,
+                        'type' => \Zend\Mvc\Router\Http\Literal::class,
                         'options' => [
                             'route' => '/add',
-                            'defaults' => [
-                                'controller' => \Blog\Controller\EntryController::class,
-                                'action' => 'add',
-                            ],
                         ],
-                        'may_terminate' => true,
+                        'may_terminate' => false,
                         'child_routes' => [
                             'get' => [
                                 'type' => \Zend\Mvc\Router\Http\Method::class,
                                 'options' => [
                                     'verb' => 'get',
                                     'defaults' => [
-                                        'controller' => \Blog\Controller\EntryController::class,
                                         'action' => 'add',
                                     ],
                                 ],
@@ -193,7 +182,6 @@ return [
                                 'options' => [
                                     'verb' => 'post',
                                     'defaults' => [
-                                        'controller' => \Blog\Controller\EntryController::class,
                                         'action' => 'createEntry',
                                     ],
                                 ],
@@ -204,12 +192,30 @@ return [
                         'type' => 'Segment',
                         'options' => [
                             'route' => '/edit[/:id]',
-                            'defaults' => [
-                                'action' => 'edit',
-                            ],
                             'constraints' => [
                                 'id' => '[0-9]+',
                             ]
+                        ],
+                        'may_terminate' => false,
+                        'child_routes' => [
+                            'get' => [
+                                'type' => \Zend\Mvc\Router\Http\Method::class,
+                                'options' => [
+                                    'verb' => 'get',
+                                    'defaults' => [
+                                        'action' => 'edit',
+                                    ],
+                                ],
+                            ],
+                            'post' => [
+                                'type' => \Zend\Mvc\Router\Http\Method::class,
+                                'options' => [
+                                    'verb' => 'post',
+                                    'defaults' => [
+                                        'action' => 'editEntry',
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                     'delete' => [
@@ -228,12 +234,30 @@ return [
                         'type' => 'Segment',
                         'options' => [
                             'route' => '/details[/:id]',
-                            'defaults' => [
-                                'action' => 'details',
-                            ],
                             'constraints' => [
                                 'id' => '[0-9]+',
                             ]
+                        ],
+                        'may_terminate' => false,
+                        'child_routes' => [
+                            'get' => [
+                                'type' => \Zend\Mvc\Router\Http\Method::class,
+                                'options' => [
+                                    'verb' => 'get',
+                                    'defaults' => [
+                                        'action' => 'details',
+                                    ],
+                                ],
+                            ],
+                            'post' => [
+                                'type' => \Zend\Mvc\Router\Http\Method::class,
+                                'options' => [
+                                    'verb' => 'post',
+                                    'defaults' => [
+                                        'action' => 'addComment',
+                                    ],
+                                ],
+                            ],
                         ],
                     ],
                 ],
