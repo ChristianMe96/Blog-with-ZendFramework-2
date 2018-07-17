@@ -34,6 +34,16 @@ return [
     */
     'router' => [
         'routes' => [
+            'redirectHome' => [
+                'type' => 'Literal',
+                'options' => [
+                    'route' => '/',
+                    'defaults' => [
+                        'controller' => \Blog\Controller\BlogController::class,
+                        'action' => 'index',
+                    ],
+                ],
+            ],
             'login' => [
                 'type' => \Zend\Mvc\Router\Http\Literal::class,
                 'options' => [

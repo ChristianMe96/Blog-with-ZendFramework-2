@@ -8,8 +8,16 @@
 
 namespace Blog\InputFilter;
 
+use Blog\Filter\NumbersSpecialCharactersExceptComma;
+use Blog\Validator\NoSpecialCharacters;
+use Blog\Validator\Tag;
+use Zend\Filter\File\UpperCase;
+use Zend\Filter\PregReplace;
+use Zend\Filter\StringToLower;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
+use Zend\Validator\NotEmpty;
+use Zend\Validator\Regex;
 use Zend\Validator\StringLength;
 use Zend\Filter\StringTrim;
 use Zend\Filter\StripTags;
@@ -35,26 +43,42 @@ class EntryFilter implements InputFilterAwareInterface
 
             $inputFilter = new InputFilter();
 
-            $stringLengthValidator = new StringLength();
-            $stringLengthValidator->setMax(1000)->setMin(1)->setEncoding('UTF-8');
+            new UpperCase();
+
+            $notEmpty = new NotEmpty();
+            $notEmpty->setMessage('Darf nicht leer sein!');
+
+            $specialCharcterFilter = new PregReplace([
+                'pattern'     => '/bob/',
+                'replacement' => 'john',
+            ]);
+
+            $stringLengthContent = new StringLength();
+            $stringLengthContent->setMax(1000)->setMin(15)->setEncoding('UTF-8');
+            $stringLengthContent->setMessage('Text muss zwischen %min% und %max% Zeichen lang sein!');
+            $stringLengthTitle = new StringLength();
+            $stringLengthTitle->setMax(64)->setMin(10)->setEncoding('UTF-8');
+            $stringLengthTitle->setMessage('Titel muss zwischen %min% und %max% Zeichen lang sein!');
+
+            $tagValidator = new Tag();
+            $noSpecialCharacters = new NoSpecialCharacters();
 
             $title = new Input('title');
             $title->getFilterChain()->attachByName(StripTags::class)->attachByName(StringTrim::class);
-            $title->getValidatorChain()->attach($stringLengthValidator);
+            $title->getValidatorChain()->attach($notEmpty, true)->attach($stringLengthTitle);
 
 
 
             $content = new Input('content');
             $content->getFilterChain()->attachByName(StripTags::class)->attachByName(StringTrim::class);
-            $content->getValidatorChain()->attach($stringLengthValidator);
+            $content->getValidatorChain()->attach($notEmpty, true)->attach($stringLengthContent);
 
-            /*
-            $author = new Input('authorId');
-            $author->getFilterChain()->attachByName(StripTags::class)->attachByName(StringTrim::class);
-            $author->getValidatorChain()->attach($stringLengthValidator);
-            */
 
-            $inputFilter->add($title)->add($content);#->add($author);
+            $tags = new Input('tags');
+            $tags->getFilterChain()->attachByName(StripTags::class)->attachByName(StringTrim::class)->attachByName(StringToLower::class);
+            $tags->getValidatorChain()->attach($notEmpty, true)->attach($tagValidator, true)->attach($noSpecialCharacters, true);
+
+            $inputFilter->add($title)->add($content)->add($tags);
 
 
 

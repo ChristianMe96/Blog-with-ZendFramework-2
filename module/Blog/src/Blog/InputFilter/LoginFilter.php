@@ -14,6 +14,7 @@ use Zend\InputFilter\Input;
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
+use Zend\Validator\NotEmpty;
 use Zend\Validator\StringLength;
 
 
@@ -34,18 +35,25 @@ class LoginFilter implements InputFilterAwareInterface
 
             $inputFilter = new InputFilter();
 
-            $stringLengthValidator = new StringLength();
-            $stringLengthValidator->setMax(18)->setMin(1)->setEncoding('UTF-8');
+            $notEmpty = new NotEmpty();
+            $notEmpty->setMessage('Darf nicht leer sein!');
+
+            $stringLengthUsername = new StringLength();
+            $stringLengthUsername->setMax(18)->setMin(3)->setEncoding('UTF-8');
+            $stringLengthUsername->setMessage('Username muss zwischen %min% und %max% Zeichen lang sein!');
+            $stringLengthPassword = new StringLength();
+            $stringLengthPassword->setMax(50)->setMin(4)->setEncoding('UTF-8');
+            $stringLengthPassword->setMessage('Password muss zwischen %min% und %max% Zeichen lang sein!');
 
             $username = new Input('username');
             $username->getFilterChain()->attachByName(StripTags::class)->attachByName(StringTrim::class);
-            $username->getValidatorChain()->attach($stringLengthValidator);
+            $username->getValidatorChain()->attach($notEmpty, true)->attach($stringLengthUsername);
 
 
 
             $password = new Input('password');
             $password->getFilterChain()->attachByName(StripTags::class)->attachByName(StringTrim::class);
-            $password->getValidatorChain()->attach($stringLengthValidator);
+            $password->getValidatorChain()->attach($notEmpty, true)->attach($stringLengthPassword);
 
 
             $inputFilter->add($username)->add($password);

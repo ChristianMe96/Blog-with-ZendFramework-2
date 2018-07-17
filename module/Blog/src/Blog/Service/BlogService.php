@@ -114,6 +114,9 @@ class BlogService
     {
         $splitString = explode(',' , $data);
         foreach ($splitString as $tag) {
+            if (empty($tag)) {
+                continue;
+            }
             $newTag = new Tag();
             $newTag->setName($tag);
 
@@ -127,7 +130,7 @@ class BlogService
         $tagCloud = [];
 
         $posts = $this->entityManager->getRepository(Entry::class)->findEntriesWithTags()->getResult();
-        $totalPostCount = count($posts);
+        $totalEntryCount = count($posts);
 
         $tags = $this->entityManager->getRepository(Tag::class)
             ->findAll();
@@ -146,7 +149,7 @@ class BlogService
 
         // Normalize
         foreach ($tagCloud as $name=>$postCount) {
-            $normalizedTagCloud[$name] =  $postCount/$totalPostCount;
+            $normalizedTagCloud[$name] =  $postCount/$totalEntryCount;
         }
 
         return $normalizedTagCloud;

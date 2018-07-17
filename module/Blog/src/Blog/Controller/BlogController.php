@@ -8,6 +8,7 @@ use Blog\Repository\Entry;
 
 use Blog\Service\BlogService;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
+use Zend\I18n\Filter\Alnum;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Paginator\Paginator;
 use Zend\Session\Container;

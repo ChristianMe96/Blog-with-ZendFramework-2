@@ -36,18 +36,23 @@ class CommentFilter implements InputFilterAwareInterface
 
             $inputFilter = new InputFilter();
 
+            $notEmpty = new NotEmpty();
+            $notEmpty->setMessage('Darf nicht leer sein!');
+
             $commentLengthFilter = new StringLength();
-            $commentLengthFilter->setMax(10000)->setMin(1)->setEncoding('UTF-8');
+            $commentLengthFilter->setMax(1000)->setMin(1)->setEncoding('UTF-8');
+            $commentLengthFilter->setMessage('Kommentar muss zwischen %min% und %max% Zeichen lang sein!');
 
             $nameInputFilter = new StringLength();
-            $nameInputFilter->setMax(15)->setMin(1)->setEncoding('UTF-8');
+            $nameInputFilter->setMax(15)->setMin(3)->setEncoding('UTF-8');
+            $nameInputFilter ->setMessage('Name muss zwischen %min% und %max% Zeichen lang sein!');
 
             $urlMailLengthFilter = new StringLength();
-            $urlMailLengthFilter->setMax(100)->setMin(0)->setEncoding('UTF-8');
+            $urlMailLengthFilter->setMax(150)->setMin(0)->setEncoding('UTF-8');
 
             $nameInput = new Input('nameInput');
             $nameInput->getFilterChain()->attachByName(StripTags::class)->attachByName(StringTrim::class);
-            $nameInput->getValidatorChain()->attach($nameInputFilter);
+            $nameInput->getValidatorChain()->attach($notEmpty, true)->attach($nameInputFilter);
 
             $commentMail = new Input('commentMail');
             $commentMail->getFilterChain()->attachByName(StripTags::class)->attachByName(StringTrim::class);
@@ -61,7 +66,7 @@ class CommentFilter implements InputFilterAwareInterface
 
             $content = new Input('contentComment');
             $content->getFilterChain()->attachByName(StripTags::class)->attachByName(StringTrim::class);
-            $content->getValidatorChain()->attach($commentLengthFilter);
+            $content->getValidatorChain()->attach($notEmpty, true)->attach($commentLengthFilter);
 
 
             $inputFilter->add($nameInput)->add($commentMail)->add($commentUrl)->add($content);
