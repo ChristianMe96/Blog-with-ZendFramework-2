@@ -57,12 +57,12 @@ class UserController extends AbstractActionController
     }
 
     public function registerAction()
-{
-    $form = new LoginForm();
-    $form->get('submit')->setAttribute('value', 'Register');
+    {
+        $form = new LoginForm();
+        $form->get('submit')->setAttribute('value', 'Register');
 
-    return $this->userViewModel($form, 'Register');
-}
+        return $this->userViewModel($form, 'Register');
+    }
 
     public function registrationAction()
     {

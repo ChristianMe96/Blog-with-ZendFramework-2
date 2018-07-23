@@ -2,9 +2,10 @@
 return [
     'controllers' => [
         'invokables' => [
-
+            \Blog\Controller\MailController::class => \Blog\Controller\MailController::class
         ],
         'factories' => [
+            \Blog\Controller\StatisticController::class => \Blog\Factory\StatisticController::class,
             \Blog\Controller\EntryController::class => \Blog\Factory\EntryController::class,
             \Blog\Controller\BlogController::class => \Blog\Factory\BlogController::class,
             \Blog\Controller\UserController::class => \Blog\Factory\UserController::class,
@@ -17,6 +18,7 @@ return [
         ],
         'factories' => [
             \Blog\Service\BlogService::class => \Blog\Factory\BlogService::class,
+            \Blog\Listener\VisitorCounter::class => \Blog\Factory\VisitorCounter::class
         ]
     ],
 
@@ -69,6 +71,36 @@ return [
                             'verb' => 'post',
                             'defaults' => [
                                 'action' => 'processLogin'
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'contact' => [
+                'type' => 'Literal',
+                'options' => [
+                    'route' => '/contact',
+                    'defaults' => [
+                        'controller' => \Blog\Controller\MailController::class,
+                    ],
+                ],
+                'may-terminate' => false,
+                'child_routes' => [
+                    'get' => [
+                        'type' => \Zend\Mvc\Router\Http\Method::class,
+                        'options' => [
+                            'verb' => 'get',
+                            'defaults' => [
+                                'action' => 'mailForm',
+                            ],
+                        ],
+                    ],
+                    'post' => [
+                        'type' => \Zend\Mvc\Router\Http\Method::class,
+                        'options' => [
+                            'verb' => 'post',
+                            'defaults' => [
+                                'action' => 'sendMail',
                             ],
                         ],
                     ],
@@ -161,6 +193,17 @@ return [
                     ],
                 ],
             ],
+            'visitorChart' => [
+                'type' => 'Literal',
+                'options' => [
+                    'route' => '/visitor-chart',
+                    'defaults' => [
+                        'controller' => \Blog\Controller\StatisticController::class,
+                        'action' => 'visitorChart',
+                    ],
+                ],
+            ],
+
             'entry' => [
                 'type' => 'Literal',
                 'options' => [
@@ -277,6 +320,7 @@ return [
 
     'listeners' => [
         \Blog\Listener\LoginStatus::class,
+        \Blog\Listener\VisitorCounter::class
     ],
     'view_manager' => [
         'template_path_stack' => [

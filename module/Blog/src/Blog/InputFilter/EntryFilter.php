@@ -65,13 +65,13 @@ class EntryFilter implements InputFilterAwareInterface
 
             $title = new Input('title');
             $title->getFilterChain()->attachByName(StripTags::class)->attachByName(StringTrim::class);
-            $title->getValidatorChain()->attach($notEmpty, true)->attach($stringLengthTitle);
+            $title->getValidatorChain()->attach($notEmpty, true)->attach($stringLengthTitle, true);
 
 
 
             $content = new Input('content');
             $content->getFilterChain()->attachByName(StripTags::class)->attachByName(StringTrim::class);
-            $content->getValidatorChain()->attach($notEmpty, true)->attach($stringLengthContent);
+            $content->getValidatorChain()->attach($notEmpty, true)->attach($stringLengthContent, true);
 
 
             $tags = new Input('tags');
@@ -79,8 +79,6 @@ class EntryFilter implements InputFilterAwareInterface
             $tags->getValidatorChain()->attach($notEmpty, true)->attach($tagValidator, true)->attach($noSpecialCharacters, true);
 
             $inputFilter->add($title)->add($content)->add($tags);
-
-
 
 
             $this->inputFilter = $inputFilter;

@@ -12,10 +12,10 @@
 
         <!-- Le styles -->
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-                        ->prependStylesheet($this->basePath('css/style.css'))
-                        ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
-                        ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
-                        ->prependStylesheet($this->basePath('css/blog-post.css')) ?>
+                ->prependStylesheet($this->basePath('css/bootstrap-theme.min.css'))
+                ->prependStylesheet($this->basePath('css/bootstrap.min.css'))
+                ->prependStylesheet($this->basePath('css/blog-post.css'))
+                ->prependStylesheet($this->basePath('css/style.css')) ?>
 
         <!-- Scripts -->
         <?php echo $this->headScript()
@@ -47,6 +47,7 @@
                             <li><a href="<?php echo $this->url('entry/add/get')?>"><?php echo $this->translate('Add Entry') ?></a></li>
                             <li><a href="<?php echo $this->url('logout', array('action'=>'logout')) ?>"><?php echo $this->translate('Logout') ?></a></li>
                         <?php endif; ?>
+                        <li><a href="<?php echo $this->url('contact/get') ?>"><?php echo $this->translate('Contact') ?></a></li>
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
@@ -65,12 +66,13 @@
             echo $flash->render('default', ['alert', 'alert-dismissable', 'alert-warning']);
             echo $flash->render('success', ['alert', 'alert-dismissable', 'alert-success']);
             ?>
+
             <?php echo $this->content; ?>
             <!-- <hr> -->
-            <footer>
-
-            </footer>
         </div> <!-- /container -->
+        <footer class="footer">
+            <p class="pull-right"><?= $this->visitorCount ?> : <a href="<?php echo $this->url('visitorChart')?>"><?= $this->translate('Visitors Today') ?></a></p>
+        </footer>
         <?php echo $this->inlineScript() ?>
     </body>
 </html>

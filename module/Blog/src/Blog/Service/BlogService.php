@@ -7,6 +7,7 @@ use Blog\Entity\Comment;
 use Blog\Entity\Entry;
 use Blog\Entity\Tag;
 use Blog\Entity\User;
+use Blog\Entity\Visitor;
 use Blog\Exception\UsernameAlreadyExists;
 use Doctrine\ORM\EntityManager;
 use Zend\Session\Container;
@@ -21,6 +22,29 @@ class BlogService
     public function __construct(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
+    }
+
+    public function collectVisitorByIp(string $visitorsIp): void
+    {
+        $visitorRepo = $this->entityManager->getRepository(Visitor::class);
+        $visitor = $visitorRepo->findBy(['ip' => $visitorsIp, 'date' => date('Y-m-d')]);
+
+        if (!$visitor) {
+            $visitor = new Visitor();
+            $visitor->setIp($visitorsIp);
+            $visitor->setDate(date('Y-m-d'));
+
+            $this->entityManager->persist($visitor);
+            $this->entityManager->flush();
+        }
+    }
+
+    public function getVisitorCount(): int
+    {
+        /** @var \Blog\Repository\Visitor $visitorRepo */
+        $visitorRepo = $this->entityManager->getRepository(Visitor::class);
+
+        return $visitorRepo->countVisitorsForToday();
     }
 
     public function addNewEntry($data)
@@ -154,4 +178,6 @@ class BlogService
 
         return $normalizedTagCloud;
     }
+
+
 }

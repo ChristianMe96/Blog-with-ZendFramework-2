@@ -1,0 +1,21 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Number of Visitors</th>
+        <th scope="col">Date</th>
+    </tr>
+    </thead>
+    <tbody>
+<?php foreach ($this->visitorsPerDay as $i => $data): ?>
+    <tr>
+        <th scope="row"><?= $i+1 ?></th>
+        <td><?= $data['Visits'] ?></td>
+        <td><?= date('d.m.Y',strtotime($data['Date'])) ?></td>
+    </tr>
+<?php endforeach; ?>
+    </tbody>
+</table>
+
+
+

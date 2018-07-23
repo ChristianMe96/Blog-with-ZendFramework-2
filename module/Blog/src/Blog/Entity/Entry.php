@@ -26,7 +26,7 @@ class Entry
     protected $title;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="text")
      */
     protected $content;
 

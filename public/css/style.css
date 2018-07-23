@@ -1,6 +1,7 @@
 body {
     padding-top: 60px;
-    padding-bottom: 40px;
+    padding-bottom: 0;
+    height: 100%;
 }
 
 .zf-green {
@@ -53,3 +54,22 @@ div.container a.brand {
 h1, p {
     word-wrap: break-word;
 }
+
+.footer {
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background-image: linear-gradient(to bottom,#3c3c3c 0,#222 100%);
+}
+
+.footer p {
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+    color: #fff;
+    margin: 0 20px 0 0;
+}
+
+.form-control {
+    resize: none;
+}
+
+
