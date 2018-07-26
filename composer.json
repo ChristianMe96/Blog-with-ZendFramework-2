@@ -13,7 +13,8 @@
         "php": "^7.1",
         "zendframework/zendframework": "^2.5",
         "doctrine/doctrine-orm-module": "v1.1",
-        "swiftmailer/swiftmailer": "^6.0"
+        "swiftmailer/swiftmailer": "^6.0",
+        "guzzlehttp/guzzle": "~6.0"
     },
     "require-dev": {
         "zendframework/zend-developer-tools": "^1.2"

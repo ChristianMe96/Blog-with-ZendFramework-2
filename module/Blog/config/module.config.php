@@ -15,9 +15,11 @@ return [
     'service_manager' => [
         'invokables' => [
             Blog\Listener\LoginStatus::class => Blog\Listener\LoginStatus::class,
+            \Blog\Service\WeatherService::class => \Blog\Service\WeatherService::class
         ],
         'factories' => [
             \Blog\Service\BlogService::class => \Blog\Factory\BlogService::class,
+            \Blog\Service\VisitorService::class => \Blog\Factory\VisitorService::class,
             \Blog\Listener\VisitorCounter::class => \Blog\Factory\VisitorCounter::class
         ]
     ],
@@ -25,6 +27,10 @@ return [
     'view_helpers' => [
         'invokables' => [
             'bootstrapHelper' => \Blog\View\Helper\Bootstrap::class,
+        ],
+        'factories' => [
+            'tagCloud' => \Blog\Factory\TagCloud::class,
+            'weatherHelper' => \Blog\Factory\WeatherHelper::class,
         ]
     ],
 

@@ -10,6 +10,7 @@ namespace Blog\Listener;
 
 
 use Blog\Service\BlogService;
+use Blog\Service\VisitorService;
 use Zend\EventManager\EventInterface;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
@@ -21,11 +22,11 @@ use Zend\Session\Container;
 
 class VisitorCounter implements ListenerAggregateInterface
 {
-    private $blogService;
+    private $visitorService;
 
-    public function __construct(BlogService $blogService)
+    public function __construct(VisitorService $visitorService)
     {
-        $this->blogService = $blogService;
+        $this->visitorService = $visitorService;
     }
 
     use ListenerAggregateTrait;
@@ -51,12 +52,12 @@ class VisitorCounter implements ListenerAggregateInterface
 
         $visitorIp = $ipAddresses[array_rand($ipAddresses)];
 
-        $this->blogService->collectVisitorByIp($visitorIp);
+        $this->visitorService->collectVisitorByIp($visitorIp);
     }
 
     public function injectVisitorCount(EventInterface $event)
     {
-        $visitorCount = $this->blogService->getVisitorCount();
+        $visitorCount = $this->visitorService->getVisitorCount();
 
         $viewModel = $event->getApplication()->getMvcEvent()->getViewModel();
         $viewModel->setVariable('visitorCount', $visitorCount);

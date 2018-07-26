@@ -7,7 +7,6 @@ use Blog\Entity\Comment;
 use Blog\Entity\Entry;
 use Blog\Entity\Tag;
 use Blog\Entity\User;
-use Blog\Entity\Visitor;
 use Blog\Exception\UsernameAlreadyExists;
 use Doctrine\ORM\EntityManager;
 use Zend\Session\Container;
@@ -24,29 +23,6 @@ class BlogService
         $this->entityManager = $entityManager;
     }
 
-    public function collectVisitorByIp(string $visitorsIp): void
-    {
-        $visitorRepo = $this->entityManager->getRepository(Visitor::class);
-        $visitor = $visitorRepo->findBy(['ip' => $visitorsIp, 'date' => date('Y-m-d')]);
-
-        if (!$visitor) {
-            $visitor = new Visitor();
-            $visitor->setIp($visitorsIp);
-            $visitor->setDate(date('Y-m-d'));
-
-            $this->entityManager->persist($visitor);
-            $this->entityManager->flush();
-        }
-    }
-
-    public function getVisitorCount(): int
-    {
-        /** @var \Blog\Repository\Visitor $visitorRepo */
-        $visitorRepo = $this->entityManager->getRepository(Visitor::class);
-
-        return $visitorRepo->countVisitorsForToday();
-    }
-
     public function addNewEntry($data)
     {
         $container = new Container('login');
@@ -58,6 +34,7 @@ class BlogService
         $entry->setDate(date('Y-m-d H:i:s'));
         $entry = $this->addNewTags($data['tags'], $entry);
 
+        /** @var User $user */
         $user = $this->entityManager->getRepository(User::class)->find($container->userId);
         $entry->setAuthor($user);
 
@@ -148,7 +125,7 @@ class BlogService
         }
         return $entry;
     }
-
+/*
     public function getTagCloud()
     {
         $tagCloud = [];
@@ -178,6 +155,6 @@ class BlogService
 
         return $normalizedTagCloud;
     }
-
+*/
 
 }

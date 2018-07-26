@@ -36,11 +36,21 @@ $this->headTitle($title);
                     <h3 class="panel-title">Popular Tags</h3>
                 </div>
                 <div class="panel-body">
-                    <?php foreach($this->tagCloud as $tagName => $frequency): ?>
+                    <?php foreach($this->tagCloud()->getTagCloud() as $tagName => $frequency): ?>
                         <a href="<?= $this->url('home/tag', ['tag' => $tagName]); ?>">
                             <?= $this->escapeHtml($tagName); ?>
                         </a>
                     <?php endforeach; ?>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Current Temperature</h3>
+                </div>
+                <div class="panel-body">
+                    <h4 class="text-center">
+                        <?= round($this->weatherHelper()->getCurrentTemp(), 1) ?> °C
+                    </h4>
                 </div>
             </div>
         </div>

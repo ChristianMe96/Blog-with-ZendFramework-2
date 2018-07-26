@@ -8,6 +8,7 @@ use Blog\Repository\Entry;
 
 use Blog\Service\BlogService;
 use DoctrineORMModule\Paginator\Adapter\DoctrinePaginator;
+use GuzzleHttp\Client;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Paginator\Paginator;
 use Zend\Session\Container;
@@ -47,11 +48,8 @@ class BlogController extends AbstractActionController
         $paginator->setItemCountPerPage(3);
 
 
-        $tagCloud = $this->blogService->getTagCloud();
-
-
         return new ViewModel([
-            'paginator' => $paginator, "currentUserId" => $userId, 'tagCloud' => $tagCloud
+            'paginator' => $paginator, "currentUserId" => $userId
         ]);
 
     }
@@ -70,10 +68,8 @@ class BlogController extends AbstractActionController
         $paginator->setCurrentPageNumber($page);
         $paginator->setItemCountPerPage(3);
 
-        $tagCloud = $this->blogService->getTagCloud();
-
         return new ViewModel([
-            'paginator' => $paginator, "username" => $username, "currentUserId" => $userId,'tagCloud' => $tagCloud
+            'paginator' => $paginator, "username" => $username, "currentUserId" => $userId
         ]);
     }
 }
